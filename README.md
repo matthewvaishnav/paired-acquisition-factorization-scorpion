@@ -4,6 +4,9 @@ Standalone reproducibility package for the core paired-scanner method study:
 **Paired-Acquisition Neural Factorization** on the SCORPION histopathology
 benchmark.
 
+Public PDF:
+https://matthewvaishnav.github.io/paired-acquisition-factorization-scorpion/paired-acquisition-factorization-scorpion.pdf
+
 ## Dataset and unit of analysis
 
 - Dataset: SCORPION paired-scanner human H&E benchmark.

@@ -1,18 +1,15 @@
-﻿\documentclass[10pt]{article}
+\documentclass[10pt]{article}
 
-\usepackage[letterpaper,top=0.55in,bottom=0.64in,left=0.72in,right=0.72in]{geometry}
+\usepackage[letterpaper,top=0.58in,bottom=0.66in,left=0.72in,right=0.72in]{geometry}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{microtype}
-\usepackage{placeins}
 \usepackage{caption}
 \usepackage{enumitem}
 \usepackage{times}
 \usepackage{titlesec}
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning,calc,fit}
 \PassOptionsToPackage{hyphens}{url}
 \usepackage{hyperref}
 \usepackage[numbers,sort&compress]{natbib}
@@ -31,7 +28,7 @@
 \setlength{\floatsep}{0.45em plus 0.2em minus 0.2em}
 \setlength{\intextsep}{0.45em plus 0.2em minus 0.2em}
 \setlist{nosep,leftmargin=*}
-\captionsetup{font=small,labelfont=bf,skip=3pt}
+\captionsetup{font=small,labelfont=bf,skip=3pt,hypcap=false}
 \titlespacing*{\section}{0pt}{0.80em}{0.35em}
 \titlespacing*{\subsection}{0pt}{0.55em}{0.20em}
 \titleformat*{\section}{\large\bfseries}
@@ -45,17 +42,14 @@
 \emergencystretch=2em
 
 \begin{document}
-% Flush-left paragraphs with a soft ragged right edge; avoids forced long lines.
 \raggedright
 \twocolumn[{
-% Title block intentionally follows the direct, compact structure of classic
-% landmark neural-network papers: one problem, one method, one result.
 \begin{center}
 \rule{\textwidth}{1.35pt}
 \vspace{0.12in}
 
 {\LARGE\bfseries Paired-Acquisition Neural Factorization\\
-for Computational Pathology\par}
+on the SCORPION Paired-Scanner Benchmark\par}
 
 \vspace{0.10in}
 \rule{\textwidth}{0.50pt}
@@ -63,7 +57,7 @@ for Computational Pathology\par}
 
 {\bfseries Matthew Vaishnav}\par
 Independent Researcher, Kitchener-Waterloo, Canada\par
-\url{https://github.com/matthewvaishnav/paired-acquisition-factorization-scorpion}
+\href{https://github.com/matthewvaishnav/paired-acquisition-factorization-scorpion}{Repository: paired-acquisition-factorization-scorpion}
 \end{center}
 
 \vspace{0.05in}
@@ -71,46 +65,38 @@ Independent Researcher, Kitchener-Waterloo, Canada\par
 \begin{minipage}{0.90\textwidth}
 \begin{center}\bfseries Abstract\end{center}
 \small
-I trained a neural factorization model to separate biological tissue signal from scanner and acquisition signal using biology-preserving paired observations. The principal experiment uses 2,400 real histopathology images from 480 aligned regions on 48 human H\&E slides, each scanned on five devices. A frozen Paired-Acquisition Neural Factorization objective reduced biological scanner-probe accuracy from 0.7825 to 0.3989 on DINOv2 features while improving paired agreement and preserving near-perfect cross-scanner tissue retrieval. Without backbone-specific tuning, the same objective transferred to pathology-native Phikon and ImageNet ResNet50. Across the two unseen feature families, the slide-blocked scanner-probe difference was $-0.4019$ with 95\% bootstrap interval $[-0.4145,-0.3895]$, favorable on all 48 slides. Scanner identity remained strongly recoverable from a compact acquisition branch, indicating factor separation rather than representational erasure.
-
-The method follows from two earlier failures. A locked adversarial study reduced site leakage but did not improve held-out tumor accuracy, and unconditional removal of a learned site component erased tumor-predictive information. Controlled latent-factor experiments then showed that ordinary observations and paired acquisitions are distinct resources. Under matched compute, doubling paired exposure improved recovery by $+0.037357$, while increasing unique anchors from 50 to 100 helped substantially more than increasing them from 100 to 200. Downstream PANDA, CAMELYON17, and PCam studies test whole-slide aggregation, institutional influence, external-center generalization, and systems constraints. The evidence supports a narrow conclusion: acquisition-associated information must be separated conditionally, with explicit protection of biology, rather than removed merely because it predicts site.
+This package reports the SCORPION core study for Paired-Acquisition Neural Factorization. The benchmark contains 48 original human H\&E slides, ten aligned tissue regions per slide, and one image from each of five scanners for every region, giving 480 biological regions and 2,400 paired-scanner images. A frozen neural factorization objective was trained on standardized frozen features to separate a biological branch from a compact acquisition branch. On DINOv2-Base features, Paired-Acquisition Neural Factorization reduced biological-branch scanner-probe accuracy from 0.7825 to 0.3989 relative to paired consistency, improved paired cosine agreement, and preserved near-saturated same-region retrieval. The same frozen objective was then transferred without backbone-specific tuning to Phikon and ImageNet ResNet50 features. Across those two unseen representation families, the slide-blocked scanner-probe difference was $-0.4019$ with 95\% bootstrap interval $[-0.4145,-0.3895]$, favorable on all 48 slides. Scanner identity remained recoverable from the acquisition branch, while tissue retrieval stayed concentrated in the biological branch. The supported conclusion is bounded: this is representation-identifiability evidence on SCORPION, not clinical validation or proof of perfect disentanglement.
 \end{minipage}
 \end{center}
 \vspace{0.08in}
 }]
 
-\section{Introduction}
-Digital pathology representations contain more than morphology. Scanner optics, color response, compression, staining, preparation, local workflow, and institutional policy can all be encoded alongside tumor-relevant tissue structure. A representation may retrieve the correct specimen and support a downstream classifier while still making scanner or center identity easy to recover. Conversely, a method that suppresses every site-predictive direction can delete useful biology.
+\section{Purpose of This Package}
+This PDF is the public SCORPION child-package paper for \textbf{Paired-Acquisition Neural Factorization}. It contains the SCORPION method, protocol, results, artifacts, and claim boundary rather than the broader computational-pathology research-program paper. The repository contains the focused code, protocol notes, compact result artifacts, and paper source for the core paired-scanner study:
+\begin{center}
+\href{https://github.com/matthewvaishnav/paired-acquisition-factorization-scorpion}{paired-acquisition-factorization-scorpion}
+\end{center}
 
-The central problem is therefore not ordinary domain invariance. It is \emph{conditional factorization}: acquisition-sensitive variation should become less recoverable from the biological representation, but tissue and diagnostic information must remain. This is difficult from ordinary observations alone because site and biology may be correlated. If a site-associated direction predicts tumor status, observational data cannot determine whether that direction is nuisance, biology, or an entangled mixture.
+The scientific question is whether a biology-preserving paired acquisition structure can reduce scanner recoverability from a biological representation while retaining same-tissue identity. The study also asks whether the effect transfers beyond the DINOv2 development feature family to a pathology-native transformer and a conventional ImageNet residual network.
 
-Biology-preserving acquisition pairs change the information structure. The same tissue region is observed under different scanners or acquisition states. What changes across a pair is candidate acquisition variation; what remains shared is candidate biology. Paired-Acquisition Neural Factorization uses this intervention structure to learn separate biological and acquisition branches and evaluates both what is removed and where it goes.
+\section{Dataset and Unit of Analysis}
+The study uses the public SCORPION benchmark \citep{ryu2025scorpion}. Each original human H\&E slide contributes ten aligned tissue regions. Each region is imaged by five scanners: AT2, GT450, DP200, P1000, and B300. This gives 48 original slides, 480 biological regions, and 2,400 images.
 
-The specific contributions of this paper are as follows. First, I provide a locked negative-result sequence showing that lower site leakage alone does not imply better tumor prediction and that unconditional subtraction can erase biology. Second, I introduce a paired-acquisition factorization objective with explicit biological retention, acquisition prediction, reconstruction, variance control, and cross-factor decorrelation. Third, I evaluate the frozen objective on real paired scanner data with original-slide blocking and transfer it without retuning across three substantially different feature families. Fourth, I measure the separate roles of ordinary observations, unique paired anchors, and repeated paired exposure in controlled latent-factor experiments. Finally, I connect representation failure to later whole-slide and federated studies without using those studies to inflate the central paired-scanner claim. Focused companion PDFs carry exact protocols, frozen result tables, and reproduction scripts for study-specific claims.
+The original slide is the statistical unit. All regions and scanner views from one slide remain in the same fold. Optimization seeds are averaged within slide before bootstrap and sign-flip inference. Patches, scanner views, tissue regions, and repeated representation families are not treated as independent biological samples.
 
-\input{study_specific_packages.tex}
+Three frozen feature families are evaluated:
+\begin{itemize}
+  \item DINOv2-Base, the development representation family \citep{oquab2023dinov2};
+  \item Phikon, a pathology-native transformer feature family \citep{filiot2023scaling};
+  \item ImageNet ResNet50, a conventional convolutional baseline \citep{he2016deep}.
+\end{itemize}
 
-\section{The Data}
-\subsection{SCORPION paired-scanner tissue}
-The primary real-data study uses the public SCORPION benchmark \citep{ryu2025scorpion}. It contains 48 original human H\&E slides, ten aligned tissue regions per slide, and one image from each of five scanners for every region: AT2, GT450, DP200, P1000, and B300. The resulting dataset contains 480 biological regions and 2,400 images.
-
-The original slide is the statistical unit. All regions and all scanner views from one slide remain in the same fold. Optimization seeds are averaged within slide before bootstrap and sign-flip inference. Patches, scanner views, regions, and repeated backbones are not treated as independent biological samples.
-
-\subsection{Controlled latent-factor data}
-Synthetic experiments generate known biological and acquisition factors, then mix them under controlled overlap and linear or nonlinear observation functions. Because the true factors are available, recovery can be measured using canonical correlation, Procrustes alignment, cross-factor leakage, paired invariance, counterfactual transport, and task retention. These experiments do not imitate the full complexity of histopathology; they isolate when the proposed supervision is sufficient or insufficient.
-
-\subsection{Downstream pathology datasets}
-PANDA supplies 10,611 verified slide-level Phikon feature bags for prostate grading and federated stress experiments \citep{bulten2022artificial}. CAMELYON17/WILDS supplies 455,954 examples from five centers for natural external-center validation \citep{bandi2018camelyon17,koh2021wilds}. PCam supplies a public patch-classification benchmark used for full-test, bootstrap, threshold, and simulated-site validation. These datasets test later levels of the learning pipeline; they are not substitutes for the paired-acquisition experiment.
-
-\section{The Paired-Acquisition Neural Factorization Model}
-\subsection{Paired acquisition supervision}
-Let $x_{r,s}\in\mathbb{R}^{D}$ be the frozen feature for tissue region $r$ acquired by scanner $s$. A biology-preserving set contains several views of the same region:
+\section{Frozen Learning Problem}
+For a tissue region $r$ and scanner $s$, let $x_{r,s}\in\mathbb{R}^{D}$ be the standardized frozen feature. The paired acquisition set
 \[
-\mathcal{V}_r=\{x_{r,s_1},\ldots,x_{r,s_m}\}.
+\mathcal{V}_r=\{x_{r,s_1},\ldots,x_{r,s_m}\}
 \]
-The biological branch should be stable across members of $\mathcal{V}_r$, whereas the acquisition branch should retain information that distinguishes scanner states.
-
-Under a simple latent model,
+contains multiple scanner views of the same biological region. The biological branch should agree across members of $\mathcal{V}_r$, while the acquisition branch should retain scanner-associated variation. Under the simple additive model
 \[
 x_{r,s}=Bz_{b,r}+Az_{a,s}+\varepsilon_{r,s},
 \]
@@ -118,38 +104,50 @@ a paired difference cancels the shared biological term:
 \[
 x_{r,s'}-x_{r,s}=A(z_{a,s'}-z_{a,s})+(\varepsilon_{r,s'}-\varepsilon_{r,s}).
 \]
-The neural model does not assume the observation map is exactly linear, but the cancellation argument explains why paired observations contain information that ordinary site labels do not.
+The neural model does not require the observation map to be exactly linear; the equation states why paired observations provide information that ordinary scanner labels alone do not.
 
 \input{paired_acquisition_model_math.tex}
 
-\section{Preventing Representation Failure}
-\subsection{Why site invariance was not enough}
-The first Paired-Acquisition Neural Factorization study used a shared feature encoder, tumor head, and gradient-reversal site head. A locked confirmation reached approximately 0.9264 held-out tumor accuracy versus 0.9270 for the tumor-only baseline. The paired accuracy difference was approximately $-0.000625$ with an interval crossing zero. Site leakage decreased slightly, but the result was not a diagnostic-performance improvement.
+\section{Protocol}
+The DINOv2 objective was frozen after bounded development. The cross-backbone transfer protocol was written before inspecting Phikon or ResNet50 outcomes. No backbone-specific loss weight, architecture width, optimizer setting, fold definition, training duration, checkpoint rule, or success threshold was changed for the transfer backbones.
 
-A later factorized model separated diagnostic and site branches with reconstruction and covariance control. Validation selected the diagnostic-only baseline. An unconditional subtraction experiment was more decisive: the learned site-associated component remained strongly tumor-predictive, so subtracting it deleted useful biological signal. These failures define the design requirement for Paired-Acquisition Neural Factorization: removed information must be accounted for, and biology must be protected directly.
+The frozen settings were:
+\begin{center}
+\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Value \\
+\midrule
+Biological dimension & 256 \\
+Acquisition dimension & 64 \\
+Hidden dimension & 512 \\
+Temperature & 0.1 \\
+Scanner adversary weight & 0.5 \\
+Scanner acquisition weight & 0.5 \\
+Direct scanner-dependence weight & 20.0 \\
+Biological/acquisition covariance weight & 0.05 \\
+Reconstruction weight & 1.0 \\
+Variance weight & 1.0 \\
+Biological covariance weight & 0.01 \\
+Epochs & 75 \\
+Region batch size & 32 \\
+AdamW learning rate & $3\times10^{-4}$ \\
+AdamW weight decay & $10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-\subsection{Collapse and factor-retention controls}
-A low scanner-probe score is meaningless if the biological branch is constant. Paired-Acquisition Neural Factorization therefore reports effective rank, per-dimension variance, tissue-region retrieval, paired cosine similarity, reconstruction, acquisition-branch scanner prediction, and acquisition-branch tissue retrieval. The desired pattern is not zero information everywhere. It is high tissue retention and reduced scanner recovery in biology, paired with high scanner recovery and substantially lower tissue retrieval in acquisition.
+The comparison model is paired consistency: it shares the pair, reconstruction, variance, and biological covariance controls but omits the acquisition branch, scanner classifiers, direct scanner-dependence penalty, and cross-factor penalty.
 
-\subsection{Ordinary observations and paired resources}
-The controlled program treats three quantities separately: ordinary observations $N_u$, unique paired anchors $N_p$, and paired repetitions $R_p$. Ordinary observations learn the task manifold. Unique anchors expose more biological locations under acquisition changes. Repetition supplies additional optimization signal for already observed interventions.
-
-The pair-repeat experiments hold total paired presentations fixed while changing the allocation between $N_p$ and $R_p$. This distinguishes a true anchor-diversity effect from the simpler explanation that a model merely received more pair-loss updates.
-
-\section{Details of Learning}
-The frozen DINOv2 objective was selected through bounded calibration on development data, followed by independent-seed confirmation and final five-fold evaluation. The direct dependence weight of 20 was fixed before the final test stage. Cross-backbone transfer to Phikon and ResNet50 was preregistered before inspecting those outcomes. The transfer experiments used new shared seeds 701--705, the same rotating slide folds, and no backbone-specific objective or schedule changes.
-
-Each SCORPION model used 75 epochs, region batch size 32, AdamW learning rate $3\times10^{-4}$, and weight decay $10^{-4}$. Every contrastive minibatch included all five scanner views of selected tissue regions. Inference used slide-block bootstrap intervals and sign-flip tests after averaging optimization seeds within each slide.
-
-The pair-repeat synthetic study used overlap 0.975, nonlinear mixing, 320 optimizer steps, observational batch size 128, paired batch size 64, $N_u\in\{750,1500\}$, pair-consistency and hybrid-curriculum methods, and ten matched seeds. The two paired-presentation budgets were 6,400 and 12,800. Within each budget, the tested allocations were 50, 100, and 200 unique anchors with compensating repetition counts.
+Each backbone uses five rotating original-slide test folds. Transfer backbones use shared seeds 701--705. A transfer backbone passes only if all predefined criteria are met: a scanner-probe reduction of at least 0.15 absolute, a scanner-probe interval entirely below zero, retrieval non-inferiority for mean and worst-pair retrieval, paired-cosine intervals entirely above zero, and nonzero variance in every biological dimension.
 
 \section{Results}
-\subsection{Frozen paired-scanner factorization}
-Before Paired-Acquisition Neural Factorization training, scanner identity was strongly recoverable from all three feature families despite high tissue retention. The pathology-native Phikon representation had the highest baseline scanner-probe score.
+\subsection{Frozen Feature Audit}
+Before factorization, scanner identity was strongly recoverable from all three frozen feature families even when same-tissue retrieval was high. Phikon had the highest baseline scanner-probe score.
 
-\begin{table}[t]
+\begin{center}
 \centering
-\caption{Frozen representation audit before Paired-Acquisition Neural Factorization training.}
+\captionof{table}{Frozen representation audit before Paired-Acquisition Neural Factorization training.}
 \scriptsize
 \setlength{\tabcolsep}{2.6pt}
 \begin{tabular}{@{}lccc@{}}
@@ -162,15 +160,43 @@ Phikon & 0.8787 & 0.9825 & 0.9640 \\
 \bottomrule
 \end{tabular}
 \label{tab:frozen_audit}
-\end{table}
+\end{center}
 
-On DINOv2, the frozen five-fold comparison reduced scanner-probe accuracy from 0.7825 to 0.3989, increased mean paired cosine from 0.8476 to 0.8789, and preserved mean tissue retrieval at approximately 0.9998.
+\subsection{Backbone-Specific Means}
+On DINOv2-Base, the frozen five-fold comparison reduced biological scanner-probe accuracy from 0.7825 to 0.3989, increased mean paired cosine from 0.8476 to 0.8789, and preserved mean same-region retrieval near 0.9998.
 
-\begin{table*}[t]
+\begin{center}
 \centering
-\caption{Paired-Acquisition Neural Factorization minus paired-consistency slide-blocked contrasts. Positive cosine and retrieval values and negative scanner-probe values are favorable.}
-\small
-\begin{tabular}{lrrrrr}
+\captionof{table}{Backbone-specific descriptive means. Bold entries mark the favorable method for scanner-probe reduction or retention metrics.}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}llrrrrr@{}}
+\toprule
+Backbone & Method & Mean cosine & Worst cosine & Mean retrieval & Worst retrieval & Scanner probe \\
+\midrule
+DINOv2-B & Paired consistency & 0.8476 & 0.8202 & \textbf{0.9999} & \textbf{0.9991} & 0.7825 \\
+DINOv2-B & Factorization & \textbf{0.8789} & \textbf{0.8502} & 0.9998 & 0.9987 & \textbf{0.3989} \\
+Phikon & Paired consistency & 0.7740 & 0.7364 & 0.9991 & 0.9940 & 0.9543 \\
+Phikon & Factorization & \textbf{0.8645} & \textbf{0.8300} & \textbf{0.9997} & \textbf{0.9974} & \textbf{0.5200} \\
+ResNet50 & Paired consistency & 0.6286 & 0.5713 & 0.9645 & 0.9356 & 0.6828 \\
+ResNet50 & Factorization & \textbf{0.6544} & \textbf{0.5978} & \textbf{0.9726} & \textbf{0.9455} & \textbf{0.3145} \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:means}
+\end{center}
+
+\subsection{Slide-Blocked Contrasts}
+Differences are Paired-Acquisition Neural Factorization minus paired consistency. Negative scanner-probe values are favorable; positive cosine and retrieval values are favorable.
+
+\begin{center}
+\centering
+\captionof{table}{Slide-blocked method contrasts by backbone.}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lrrrrr@{}}
 \toprule
 Backbone & Scanner probe & Mean cosine & Worst cosine & Mean retrieval & Worst retrieval \\
 \midrule
@@ -179,96 +205,80 @@ Phikon & $-0.4353$ & $+0.0900$ & $+0.0963$ & $+0.00060$ & $+0.00479$ \\
 ResNet50 & $-0.3685$ & $+0.0255$ & $+0.0294$ & $+0.00808$ & $+0.01688$ \\
 \bottomrule
 \end{tabular}
-\label{tab:crossbackbone}
-\end{table*}
+}
+\label{tab:contrasts}
+\end{center}
 
-Both unseen backbones passed all seven preregistered criteria without retuning. Averaging Phikon and ResNet50 method differences within the same 48 slides gave scanner-probe difference $-0.4019$ with interval $[-0.4145,-0.3895]$, mean paired-cosine difference $+0.0578$ with interval $[0.0539,0.0615]$, and worst paired-cosine difference $+0.0628$ with interval $[0.0585,0.0672]$.
+All three scanner-probe confidence intervals were entirely below zero. All mean- and worst-cosine confidence intervals were entirely above zero. Every backbone satisfied both predefined retrieval non-inferiority margins and every biological dimension retained nonzero test-fold variance.
 
-The acquisition branch retained scanner-probe accuracies of 0.8602, 0.9711, and 0.7845 for DINOv2, Phikon, and ResNet50, respectively. Its tissue retrieval was much lower than the biological branch: 0.1042, 0.0739, and 0.1705. Every biological dimension retained nonzero test-fold variance. The result is therefore consistent with separation, not a constant representation or simple information deletion.
+\subsection{Transfer-Backbone Repeated-Measures Summary}
+Phikon and ResNet50 method differences were averaged within each of the same 48 original slides. This is a repeated-measures summary over 48 slides, not evidence from 96 independent biological units.
 
-\subsection{External paired-scanner validation package}
-A companion external validation study applies the locked Paired-Acquisition Neural Factorization protocol to a public five-scanner canine squamous-cell-carcinoma dataset after geometry qualification. On 805 complete five-view regions from 44 biological samples, Paired-Acquisition Neural Factorization reduced sample-blocked scanner-probe accuracy from 0.7529 to 0.3614. The scanner-probe contrast was $-0.3803$ with bootstrap interval $[-0.3996,-0.3611]$, favorable in all 44 sample blocks, while same-region retrieval remained non-inferior. A later representation audit tested the branch-separation claim directly across folds 0--4 and seeds 911--915: scanner prediction fell from 0.878 in raw DINOv2 to 0.300 in the Paired-Acquisition Neural Factorization biological branch while same-region retrieval rose from 0.873 to 0.959; the acquisition branch retained scanner prediction at 0.968 while same-region retrieval fell to 0.031. Stronger linear, random-forest, kNN, and nonlinear MLP probes reproduced the same separation pattern. The exact dataset audit, P1000 orientation-normalization boundary, frozen encoder triage, five-fold result tables, and reproduction scripts are assigned to the companion \href{https://github.com/matthewvaishnav/paired-acquisition-factorization-caninescc}{repository} and \href{https://matthewvaishnav.github.io/paired-acquisition-factorization-caninescc/paired-acquisition-factorization-caninescc.pdf}{PDF}.
-
-\input{paired_acquisition_figure1_benchmark_table.tex}
-
-\subsection{Resource allocation under matched compute}
-\begin{figure*}[t]
+\begin{center}
 \centering
-\resizebox{0.78\textwidth}{!}{\input{paired_acquisition_resource_allocation_figure.tex}}
-\caption{Pair-repeat allocation of unique paired anchors and repeated presentations. More total exposure produced the largest gain. Increasing unique-anchor diversity helped, with diminishing returns beyond approximately 100 anchors in the tested regime. No allocation crossed the historical 0.50 recovery threshold.}
-\label{fig:resource_allocation}
-\end{figure*}
-
-At 6,400 paired presentations, the seed-blocked 200-versus-50 anchor contrast was $+0.017865$, with 95\% interval $[0.010560,0.026079]$, positive in all ten seed blocks, and exact two-sided sign-flip $p=0.001953$. The 200-versus-100 contrast was only $+0.001578$. At 12,800 presentations, the corresponding contrasts were $+0.013050$ and $+0.002422$.
-
-Doubling paired exposure increased recovery by $+0.037357$ overall, with interval $[0.030315,0.043657]$, positive in all ten seed blocks, and exact $p=0.001953$. This establishes separate exposure and allocation effects. It does not establish a universal optimum or a recovered phase boundary.
-
-\subsection{Whole-slide modeling on PANDA}
-The whole-slide studies compare simple and learned aggregation under the same broad feature-bag setting. Mean-pooled Phikon plus an MLP reached validation QWK 0.7274. Gated AttentionMIL reached 0.8100. Three listed tuned TransnnMIL runs reached 0.8155, 0.8225, and 0.8086. An 18-run grid across six learning rates and three seeds reached a best mean validation QWK of $0.8257\pm0.0169$ at learning rate $10^{-4}$.
-
-These results show a large improvement from mean pooling to attention-based MIL and establish a stable TransnnMIL training recipe. They do not yet prove architectural superiority over AttentionMIL, TransMIL, or nnMIL under fully matched compute.
-
-\subsection{Federated site-signal auditing}
-In the full-PANDA label-noise study, a tuned observable detector-switch policy kept clean performance effectively unchanged while improving global QWK by $+0.008009$ at 25\% dominant-site corruption and $+0.007482$ at 35\% corruption. A stronger transfer experiment froze a detector calibrated under label noise and applied it without retuning to systematic conservative ordinal threshold shift.
-
-\begin{table*}[t]
-\centering
-\caption{Fixed detector transfer to conservative ordinal threshold shift. Deltas are detector-switch minus the clean-strategy baseline.}
-\small
-\begin{tabular}{rrrrr}
+\captionof{table}{Repeated-measures transfer summary over Phikon and ResNet50.}
+\scriptsize
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lrrr@{}}
 \toprule
-Shift & Trigger & Global QWK $\Delta$ & Macro-F1 $\Delta$ & Worst-site QWK $\Delta$ \\
+Metric & Mean difference & 95\% slide-bootstrap interval & Favorable slides \\
 \midrule
-0\% & 13.3\% & $-0.00025$ & $+0.00009$ & $+0.00151$ \\
-25\% & 33.3\% & $+0.00129$ & $+0.00290$ & $+0.00353$ \\
-35\% & 60.0\% & $+0.00542$ & $+0.00838$ & $+0.00991$ \\
-45\% & 73.3\% & $+0.01053$ & $+0.01512$ & $+0.01290$ \\
+Scanner-probe accuracy & $-0.401875$ & $[-0.414458,-0.389458]$ & 48/48 \\
+Mean paired cosine & $+0.057762$ & $[+0.053949,+0.061526]$ & 48/48 \\
+Worst paired cosine & $+0.062832$ & $[+0.058452,+0.067158]$ & 48/48 \\
+Mean top-1 retrieval & $+0.004344$ & $[+0.003313,+0.005427]$ & 41/48 \\
+Worst top-1 retrieval & $+0.010833$ & $[+0.007083,+0.014583]$ & 36/48 \\
 \bottomrule
 \end{tabular}
-\label{tab:main_detector_transfer}
-\end{table*}
+}
+\label{tab:transfer}
+\end{center}
 
-At 35\% and 45\% shift, the bootstrap intervals for all three headline metrics were positive. Removing the most frequent diagnostic family reduced trigger rate but retained positive 35/45-shift means. In a 36-setting calibration-neighborhood sweep, 29 settings preserved low clean switching and positive 35\%/45\% gains across global QWK, macro-F1, and worst-site QWK.
+All Monte Carlo sign-flip tests were significant at or below 0.000008 with 250,000 draws. Both transfer backbones independently passed all seven predefined criteria, so the cross-backbone transfer claim passed.
 
-CAMELYON17 then supplied natural center shift. With frozen ImageNet features, held-out-center accuracy was 0.8312 for FedAvg-style sample weighting, 0.9132 for equal-client weighting, and 0.9094 for dominant-source downweighting. With source-trained CAMELYON17 features, the corresponding accuracies were 0.9052, 0.9318, and 0.9322. FedAvg-style source-training accuracy reached 0.9991 in the latter study, showing that stronger source fit did not imply stronger unseen-center performance.
+\subsection{Factorization Audit}
+The acquisition branch retained scanner information while losing most same-tissue retrieval behavior. This is the expected signature of factor separation, not simply making every representation uninformative.
 
-\subsection{Patch and systems studies}
-On the full 32,768-example PCam public test set, the patch classifier reached 0.8526 accuracy and 0.9394 AUC; uncertainty was evaluated with 1,000 bootstrap resamples. Threshold analysis reduced missed tumor predictions by 61.7\% relative to the documented default operating point. Simulated-site PCam studies verified that equal, volume-based, and contribution-aware weighting implementations changed institutional influence on real image data, although patch-level performance was comparatively insensitive to those weight changes.
+\begin{center}
+\centering
+\captionof{table}{Acquisition-branch audit.}
+\scriptsize
+\setlength{\tabcolsep}{2.8pt}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Backbone & Scanner & Retrieval & Rank & XCov RMS \\
+\midrule
+DINOv2-B & 0.8602 & 0.1042 & 5.4446 & 0.09280 \\
+Phikon & 0.9711 & 0.0739 & 8.6024 & 0.08887 \\
+ResNet50 & 0.7845 & 0.1705 & 9.2414 & 0.08957 \\
+\bottomrule
+\end{tabular}
+\label{tab:acquisition_audit}
+\end{center}
 
-For the CAMELYON17 feature/head regime, 100 fp32 rounds across three clients were estimated at 24.98 GB for a full ResNet18 exchange versus 2.35 MB for a 512-to-2 head, a ratio of approximately 10,894. A coefficient-noise probe preserved the equal-client and downweighted advantages through noise standard deviation 0.20. A separate infrastructure simulation measured heterogeneous update times, dropout, failed rounds, and synchronous straggler burden. These are bounded systems studies, not formal privacy or hospital-deployment validation.
+\section{Reproducibility Artifacts}
+The child repository includes:
+\begin{itemize}
+  \item core projection code under \texttt{src/models};
+  \item SCORPION experiment runners under \texttt{experiments/scorpion};
+  \item feature extraction and analysis scripts under \texttt{scripts/scorpion};
+  \item preregistered cross-backbone protocol in \texttt{docs/crossbackbone\_protocol.md};
+  \item result summary in \texttt{docs/results.md};
+  \item compact result artifacts under \texttt{results/} when available locally;
+  \item this paper source under \texttt{paper/arxiv}.
+\end{itemize}
 
-\section{Discussion}
-The main result is not merely that a scanner classifier became worse. Scanner information remained strongly available in the acquisition branch, tissue identity remained almost saturated in biology, and the frozen objective transferred without retuning across a general self-supervised encoder, a pathology-native encoder, and a conventional ImageNet encoder. This pattern is difficult to explain as one-backbone overfitting or wholesale representational collapse.
+The repository intentionally excludes raw images, extracted patches, feature archives, model checkpoints, and large generated run directories. Completed Windows CUDA runs emitted PyTorch warnings because deterministic algorithms were enabled without setting \texttt{CUBLAS\_WORKSPACE\_CONFIG}; the multi-seed slide-blocked effects are large and directionally consistent, but the completed runs should not be described as guaranteed bitwise deterministic.
 
-The external canine SCC audit strengthens the same interpretation outside the primary human SCORPION benchmark. Across five folds, five seeds, and stronger probe families, the biological branch remained weakly scanner-decodable while retaining biological identity, and the acquisition branch remained strongly scanner-decodable while losing biological retrieval behavior. This is representation-identifiability evidence, not diagnostic validation, but it directly tests the central separation claim.
+\section{Claim Boundary}
+This package supports a bounded representation-identifiability claim: on SCORPION, a frozen Paired-Acquisition Neural Factorization objective reduced linearly recoverable scanner identity in the biological branch while preserving same-tissue retrieval and transferring across DINOv2-Base, Phikon, and ResNet50 feature families.
 
-The negative studies are equally important. Gradient reversal changed leakage without improving tumor prediction. A factorized model did not beat its diagnostic-only baseline. Unconditional subtraction removed tumor-predictive information. Together, these findings reject a common shortcut: site predictability is not sufficient evidence that a direction is disposable.
-
-The controlled resource experiments add a second result. Unique paired specimens and repeated pair presentations are not interchangeable, but neither is pair diversity the only resource. Over the tested range, doubling total exposure produced the largest improvement, moving from 50 to 100 anchors produced a meaningful additional gain, and moving from 100 to 200 produced only a small gain. This suggests that future real paired-acquisition collections should report both unique biological anchors and total paired exposure rather than calling both simply ``more paired data.''
-
-The later PANDA, CAMELYON17, and PCam studies expose related authority problems at different scales. A pooling rule decides which patches dominate a slide. FedAvg decides that sample count controls institutional influence. Source-training accuracy can become nearly perfect while external-center accuracy remains worse. These studies do not validate one complete clinical system, but they show why representation, slide aggregation, institutional influence, and operational constraints must be audited separately.
-
-The main limitations are clear. SCORPION contains 48 original slides and five scanners from one benchmark. Tissue retrieval is not a clinical endpoint. Linear probes cannot prove that every form of acquisition information has been removed; the canine stronger-probe battery reduces this concern but still cannot prove absolute independence. Synthetic recovery laws are local to the tested generator, metrics, and budgets. PANDA and CAMELYON17 results are retrospective and largely feature-level. Privacy-noise and infrastructure experiments are probes, not deployment guarantees. Companion PDFs provide exact study-specific boundaries so that external, canine, synthetic, whole-slide, and federated results are not collapsed into one clinical claim. No experiment establishes treatment benefit, prospective workflow safety, regulatory readiness, or universal biological--acquisition identifiability.
+It does not establish external-dataset generalization, transfer to unseen laboratories, new tissues, staining procedures, scanner models outside SCORPION, clinical safety, diagnostic equivalence, improved patient outcomes, end-to-end whole-slide task performance, or perfect biological/acquisition disentanglement.
 
 \section{Conclusion}
-Biology-preserving paired acquisitions can supervise a neural factorization in which tissue identity is retained while scanner identity becomes substantially less recoverable from the biological branch. The same frozen objective transferred across DINOv2, Phikon, and ResNet50 on real human histopathology, while a compact acquisition branch retained scanner information. The external canine audit reproduced the branch-separation pattern across folds, seeds, and stronger probes. Earlier failures show why unconditional site removal is unsafe, and pair-repeat experiments show that unique anchors and repeated exposure are separate resources.
-
-The broader research record extends this principle to slide aggregation, federated influence, external-center validation, and systems constraints. Focused companion PDFs now carry the detailed protocols and exact tables for bounded studies such as the external canine SCC validation. The supported claim remains bounded: acquisition-associated variation should be separated conditionally and audited explicitly, not erased merely because it predicts site.
-
-\clearpage
-\onecolumn
-\appendix
-\section{Complete Empirical Study Record}
-The main text is deliberately narrow and result-first. The following appendix preserves the complete study-by-study research record, including methods, secondary experiments, negative results, systems probes, and claim boundaries.
-
-\input{broader_research_program.tex}
-
-\section{Supporting Identifiability Calculations}
-\input{identifiability_calculations.tex}
+SCORPION provides paired views of the same human tissue under five scanners. That acquisition structure is informative: it permits a neural factorization in which tissue identity remains concentrated in the biological branch while scanner identity is substantially less recoverable from that branch and remains recoverable in a compact acquisition branch. The same frozen objective passed the preregistered transfer protocol on Phikon and ResNet50 without backbone-specific retuning, making the result stronger than a DINOv2-only finding while keeping the claim explicitly bounded to this paired-scanner benchmark.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
 
 \end{document}
-
-
