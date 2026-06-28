@@ -1,0 +1,71 @@
+{
+  "all_backbone_pooled_success": {
+    "all_conditions_met": true,
+    "mean_pair_cosine_ci_above_zero": true,
+    "mean_retrieval_noninferior_margin_0_02": true,
+    "scanner_probe_ci_below_zero": true,
+    "scanner_probe_reduction_at_least_0_15": true,
+    "worst_pair_cosine_ci_above_zero": true,
+    "worst_retrieval_noninferior_margin_0_02": true
+  },
+  "backbone_success": [
+    {
+      "all_biological_dimensions_nonzero": true,
+      "all_conditions_met": true,
+      "backbone": "dinov2_base",
+      "mean_pair_cosine_ci_above_zero": true,
+      "mean_retrieval_noninferior_margin_0_02": true,
+      "scanner_probe_ci_below_zero": true,
+      "scanner_probe_reduction_at_least_0_15": true,
+      "worst_pair_cosine_ci_above_zero": true,
+      "worst_retrieval_noninferior_margin_0_02": true
+    },
+    {
+      "all_biological_dimensions_nonzero": true,
+      "all_conditions_met": true,
+      "backbone": "phikon",
+      "mean_pair_cosine_ci_above_zero": true,
+      "mean_retrieval_noninferior_margin_0_02": true,
+      "scanner_probe_ci_below_zero": true,
+      "scanner_probe_reduction_at_least_0_15": true,
+      "worst_pair_cosine_ci_above_zero": true,
+      "worst_retrieval_noninferior_margin_0_02": true
+    },
+    {
+      "all_biological_dimensions_nonzero": true,
+      "all_conditions_met": true,
+      "backbone": "resnet50",
+      "mean_pair_cosine_ci_above_zero": true,
+      "mean_retrieval_noninferior_margin_0_02": true,
+      "scanner_probe_ci_below_zero": true,
+      "scanner_probe_reduction_at_least_0_15": true,
+      "worst_pair_cosine_ci_above_zero": true,
+      "worst_retrieval_noninferior_margin_0_02": true
+    }
+  ],
+  "claim_boundary": "Repeated-measures transfer across three feature families on the same 48 SCORPION slides; not external-dataset or clinical validation.",
+  "crossbackbone_transfer_claim_passed": true,
+  "development_backbone": "dinov2_base",
+  "n_unique_slide_blocks": 48,
+  "transfer_backbones": [
+    "phikon",
+    "resnet50"
+  ],
+  "transfer_backbones_all_pass": true,
+  "transfer_effect_direction_consistency": {
+    "pair_cosine_average": true,
+    "pair_cosine_worst": true,
+    "retrieval_top1_average": true,
+    "retrieval_top1_worst": true,
+    "scanner_probe_accuracy": true
+  },
+  "transfer_pooled_success": {
+    "all_conditions_met": true,
+    "mean_pair_cosine_ci_above_zero": true,
+    "mean_retrieval_noninferior_margin_0_02": true,
+    "scanner_probe_ci_below_zero": true,
+    "scanner_probe_reduction_at_least_0_15": true,
+    "worst_pair_cosine_ci_above_zero": true,
+    "worst_retrieval_noninferior_margin_0_02": true
+  }
+}

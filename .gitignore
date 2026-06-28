@@ -1,0 +1,37 @@
+﻿# Raw image and slide artifacts
+*.svs
+*.ndpi
+*.mrxs
+*.tif
+*.tiff
+*.jpg
+*.jpeg
+*.png
+
+# Feature/model artifacts
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Regenerable local outputs
+results/**/runs/
+results/**/fold_*/
+paper/paired-acquisition-factorization-scorpion.pdf
+paper/arxiv/*.aux
+paper/arxiv/*.bbl
+paper/arxiv/*.blg
+paper/arxiv/*.log
+paper/arxiv/*.out
+paper/arxiv/main.pdf
+paper/arxiv/build/
+paper/arxiv/*.zip
+
+# Python / OS
+__pycache__/
+*.pyc
+.venv/
+.env
+.DS_Store
+Thumbs.db

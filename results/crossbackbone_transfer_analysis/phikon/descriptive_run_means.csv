@@ -1,0 +1,4 @@
+﻿variant,pair_cosine_average,pair_cosine_worst,retrieval_top1_average,retrieval_top1_worst,scanner_probe_accuracy,effective_rank,feature_variance_nonzero_fraction,n_test_slides
+paired_reference,0.7739916768074037,0.7363561010360717,0.9990644444444444,0.9940444444444445,0.9542844444444445,55.36227584065685,1.0,9.6
+paired_acquisition_dep20,0.8644930937290192,0.8300214433670043,0.99968,0.9974444444444444,0.5200444444444444,46.75071637524961,1.0,9.6
+

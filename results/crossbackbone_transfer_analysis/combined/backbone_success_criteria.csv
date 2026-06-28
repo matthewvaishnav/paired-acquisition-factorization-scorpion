@@ -1,0 +1,4 @@
+backbone,scanner_probe_reduction_at_least_0_15,scanner_probe_ci_below_zero,mean_retrieval_noninferior_margin_0_02,worst_retrieval_noninferior_margin_0_02,mean_pair_cosine_ci_above_zero,worst_pair_cosine_ci_above_zero,all_biological_dimensions_nonzero,all_conditions_met
+dinov2_base,True,True,True,True,True,True,True,True
+phikon,True,True,True,True,True,True,True,True
+resnet50,True,True,True,True,True,True,True,True

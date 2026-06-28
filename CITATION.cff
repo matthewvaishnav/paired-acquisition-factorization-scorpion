@@ -1,0 +1,8 @@
+﻿cff-version: 1.2.0
+title: Paired-Acquisition Neural Factorization on SCORPION
+message: If you use this reproducibility package, please cite the repository and the SCORPION benchmark.
+authors:
+  - family-names: Chorne
+    given-names: Larry
+repository-code: https://github.com/matthewvaishnav/paired-acquisition-factorization-scorpion
+license: MIT

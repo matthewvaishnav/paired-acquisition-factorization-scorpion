@@ -1,0 +1,45 @@
+﻿{
+  "method_descriptive_means": [
+    {
+      "effective_rank": 55.36227584065685,
+      "feature_variance_nonzero_fraction": 1.0,
+      "n_test_slides": 9.6,
+      "pair_cosine_average": 0.7739916768074037,
+      "pair_cosine_worst": 0.7363561010360717,
+      "retrieval_top1_average": 0.9990644444444444,
+      "retrieval_top1_worst": 0.9940444444444445,
+      "scanner_probe_accuracy": 0.9542844444444445,
+      "variant": "paired_reference"
+    },
+    {
+      "effective_rank": 46.75071637524961,
+      "feature_variance_nonzero_fraction": 1.0,
+      "n_test_slides": 9.6,
+      "pair_cosine_average": 0.8644930937290192,
+      "pair_cosine_worst": 0.8300214433670043,
+      "retrieval_top1_average": 0.99968,
+      "retrieval_top1_worst": 0.9974444444444444,
+      "scanner_probe_accuracy": 0.5200444444444444,
+      "variant": "paired_acquisition_dep20"
+    }
+  ],
+  "n_seeds_per_slide": 5,
+  "n_unique_test_slides": 48,
+  "paired_acquisition_factor_means": {
+    "acquisition_effective_rank": 8.602407935948454,
+    "acquisition_scanner_probe": 0.9710933333333334,
+    "acquisition_tissue_retrieval": 0.07391777777777779,
+    "cross_covariance_rms": 0.08886689931154251
+  },
+  "success_criteria": {
+    "all_biological_dimensions_nonzero": true,
+    "all_conditions_met": true,
+    "mean_pair_cosine_ci_above_zero": true,
+    "mean_retrieval_noninferior_margin_0_02": true,
+    "scanner_probe_ci_below_zero": true,
+    "scanner_probe_reduction_at_least_0_15": true,
+    "worst_pair_cosine_ci_above_zero": true,
+    "worst_retrieval_noninferior_margin_0_02": true
+  }
+}
+

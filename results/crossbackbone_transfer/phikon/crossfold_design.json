@@ -1,0 +1,74 @@
+﻿{
+  "base_features": "C:\\Users\\matth\\computational-pathology-research\\results\\scorpion\\features\\fold_0_phikon.npz",
+  "calibration_seeds_excluded": [
+    401,
+    402,
+    403
+  ],
+  "confirmation_seeds_excluded": [
+    501,
+    502,
+    503,
+    504,
+    505,
+    506,
+    507,
+    508,
+    509,
+    510
+  ],
+  "device": "cuda",
+  "epochs": 75,
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "hyperparameters_frozen": true,
+  "learning_rate": 0.0003,
+  "manifest_directory": "C:\\Users\\matth\\computational-pathology-research\\data\\scorpion\\splits",
+  "region_batch_size": 32,
+  "seeds": [
+    701,
+    702,
+    703,
+    704,
+    705
+  ],
+  "source_metadata": {
+    "amp": true,
+    "batch_size": 32,
+    "data_root": "C:\\Users\\matth\\Downloads\\SCORPION_dataset\\SCORPION_dataset",
+    "device": "cuda",
+    "feature_dim": 768,
+    "manifest": "C:\\Users\\matth\\computational-pathology-research\\data\\scorpion\\splits\\fold_0_manifest.csv",
+    "model": "phikon",
+    "model_revision": "057cc0295895c2df3dd7681a89680da6015cbefe",
+    "model_source": "owkin/phikon",
+    "n_images": 2400,
+    "torch_version": "2.5.1+cu121"
+  },
+  "stage": "frozen_five_fold_test",
+  "variants": {
+    "paired_reference": {
+      "cross_covariance_weight": 0.0,
+      "gradient_reversal_strength": 0.0,
+      "method": "paired_consistency",
+      "scanner_acquisition_weight": 0.0,
+      "scanner_adversary_weight": 0.0,
+      "scanner_dependence_weight": 0.0
+    },
+    "paired_acquisition_dep20": {
+      "cross_covariance_weight": 0.05,
+      "gradient_reversal_strength": 1.0,
+      "method": "paired_acquisition",
+      "scanner_acquisition_weight": 0.5,
+      "scanner_adversary_weight": 0.5,
+      "scanner_dependence_weight": 20.0
+    }
+  },
+  "weight_decay": 0.0001
+}
+

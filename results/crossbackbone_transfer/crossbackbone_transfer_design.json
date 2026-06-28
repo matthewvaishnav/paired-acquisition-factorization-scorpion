@@ -1,0 +1,70 @@
+﻿{
+  "archives": {
+    "phikon": {
+      "feature_dim": 768,
+      "feature_variance_mean": 1.0137497186660767,
+      "model": "phikon",
+      "model_revision": "057cc0295895c2df3dd7681a89680da6015cbefe",
+      "model_source": "owkin/phikon",
+      "n_images": 2400,
+      "path": "C:\\Users\\matth\\computational-pathology-research\\results\\scorpion\\features\\fold_0_phikon.npz"
+    },
+    "resnet50": {
+      "feature_dim": 2048,
+      "feature_variance_mean": 0.04074116423726082,
+      "model": "resnet50_imagenet1k_v2",
+      "model_revision": null,
+      "model_source": null,
+      "n_images": 2400,
+      "path": "C:\\Users\\matth\\computational-pathology-research\\results\\scorpion\\features\\fold_0_resnet50_imagenet.npz"
+    }
+  },
+  "development_backbone": "dinov2_base",
+  "device": "cuda",
+  "epochs": 75,
+  "folds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "hyperparameters_frozen": true,
+  "learning_rate": 0.0003,
+  "manifests_dir": "C:\\Users\\matth\\computational-pathology-research\\data\\scorpion\\splits",
+  "no_backbone_specific_tuning": true,
+  "protocol": "docs/research/scorpion-paired_acquisition-crossbackbone-protocol.md",
+  "region_batch_size": 32,
+  "seeds": [
+    701,
+    702,
+    703,
+    704,
+    705
+  ],
+  "stage": "frozen_crossbackbone_transfer",
+  "transfer_backbones": [
+    "phikon",
+    "resnet50"
+  ],
+  "variants": {
+    "paired_reference": {
+      "cross_covariance_weight": 0.0,
+      "gradient_reversal_strength": 0.0,
+      "method": "paired_consistency",
+      "scanner_acquisition_weight": 0.0,
+      "scanner_adversary_weight": 0.0,
+      "scanner_dependence_weight": 0.0
+    },
+    "paired_acquisition_dep20": {
+      "cross_covariance_weight": 0.05,
+      "gradient_reversal_strength": 1.0,
+      "method": "paired_acquisition",
+      "scanner_acquisition_weight": 0.5,
+      "scanner_adversary_weight": 0.5,
+      "scanner_dependence_weight": 20.0
+    }
+  },
+  "weight_decay": 0.0001
+}
+
