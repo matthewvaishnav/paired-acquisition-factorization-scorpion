@@ -1,6 +1,6 @@
 \documentclass[10pt]{article}
 
-\usepackage[letterpaper,top=0.58in,bottom=0.66in,left=0.72in,right=0.72in]{geometry}
+\usepackage[letterpaper,top=1.02in,bottom=0.92in,left=1.50in,right=1.50in]{geometry}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
 \usepackage{graphicx}
@@ -11,26 +11,18 @@
 \usepackage{times}
 \usepackage{titlesec}
 \PassOptionsToPackage{hyphens}{url}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage[numbers,sort&compress]{natbib}
 
-\hypersetup{
-  colorlinks=true,
-  linkcolor=blue!55!black,
-  citecolor=blue!55!black,
-  urlcolor=blue!55!black
-}
-
-\setlength{\columnsep}{0.24in}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.08em}
+\setlength{\parskip}{0.54em}
 \setlength{\textfloatsep}{0.55em plus 0.2em minus 0.2em}
 \setlength{\floatsep}{0.45em plus 0.2em minus 0.2em}
 \setlength{\intextsep}{0.45em plus 0.2em minus 0.2em}
 \setlist{nosep,leftmargin=*}
 \captionsetup{font=small,labelfont=bf,skip=3pt,hypcap=false}
-\titlespacing*{\section}{0pt}{0.80em}{0.35em}
-\titlespacing*{\subsection}{0pt}{0.55em}{0.20em}
+\titlespacing*{\section}{0pt}{1.35em}{0.65em}
+\titlespacing*{\subsection}{0pt}{0.85em}{0.35em}
 \titleformat*{\section}{\large\bfseries}
 \titleformat*{\subsection}{\normalsize\bfseries}
 \AtBeginDocument{%
@@ -42,34 +34,35 @@
 \emergencystretch=2em
 
 \begin{document}
-\raggedright
-\twocolumn[{
+
 \begin{center}
-\rule{\textwidth}{1.35pt}
-\vspace{0.12in}
+\rule{\textwidth}{4pt}
+\vspace{0.22in}
 
 {\LARGE\bfseries Paired-Acquisition Neural Factorization\\
 on the SCORPION Paired-Scanner Benchmark\par}
 
-\vspace{0.10in}
-\rule{\textwidth}{0.50pt}
-\vspace{0.14in}
+\vspace{0.18in}
+\rule{\textwidth}{0.4pt}
+\vspace{0.32in}
 
 {\bfseries Matthew Vaishnav}\par
-Independent Researcher, Kitchener-Waterloo, Canada\par
-\href{https://github.com/matthewvaishnav/paired-acquisition-factorization-scorpion}{Repository: paired-acquisition-factorization-scorpion}
+Independent Researcher\par
+Kitchener-Waterloo, Canada\par
+\href{https://github.com/matthewvaishnav/paired-acquisition-factorization-scorpion}{\texttt{paired-acquisition-factorization-scorpion}}
 \end{center}
 
-\vspace{0.05in}
+\vspace{0.28in}
 \begin{center}
-\begin{minipage}{0.90\textwidth}
-\begin{center}\bfseries Abstract\end{center}
+\bfseries Abstract
+\end{center}
+\begin{center}
+\begin{minipage}{0.82\textwidth}
 \small
 This package reports the SCORPION core study for Paired-Acquisition Neural Factorization. The benchmark contains 48 original human H\&E slides, ten aligned tissue regions per slide, and one image from each of five scanners for every region, giving 480 biological regions and 2,400 paired-scanner images. A frozen neural factorization objective was trained on standardized frozen features to separate a biological branch from a compact acquisition branch. On DINOv2-Base features, Paired-Acquisition Neural Factorization reduced biological-branch scanner-probe accuracy from 0.7825 to 0.3989 relative to paired consistency, improved paired cosine agreement, and preserved near-saturated same-region retrieval. The same frozen objective was then transferred without backbone-specific tuning to Phikon and ImageNet ResNet50 features. Across those two unseen representation families, the slide-blocked scanner-probe difference was $-0.4019$ with 95\% bootstrap interval $[-0.4145,-0.3895]$, favorable on all 48 slides. Scanner identity remained recoverable from the acquisition branch, while tissue retrieval stayed concentrated in the biological branch. The supported conclusion is bounded: this is representation-identifiability evidence on SCORPION, not clinical validation or proof of perfect disentanglement.
 \end{minipage}
 \end{center}
-\vspace{0.08in}
-}]
+\vspace{0.28in}
 
 \section{Purpose of This Package}
 This PDF is the public SCORPION child-package paper for \textbf{Paired-Acquisition Neural Factorization}. It contains the SCORPION method, protocol, results, artifacts, and claim boundary rather than the broader computational-pathology research-program paper. The repository contains the focused code, protocol notes, compact result artifacts, and paper source for the core paired-scanner study.
@@ -167,7 +160,7 @@ On DINOv2-Base, the frozen five-fold comparison reduced biological scanner-probe
 \captionof{table}{Backbone-specific descriptive means. Bold entries mark the favorable method for scanner-probe reduction or retention metrics.}
 \scriptsize
 \setlength{\tabcolsep}{4pt}
-\resizebox{\columnwidth}{!}{%
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llrrrrr@{}}
 \toprule
 Backbone & Method & Mean cosine & Worst cosine & Mean retrieval & Worst retrieval & Scanner probe \\
@@ -192,7 +185,7 @@ Differences are Paired-Acquisition Neural Factorization minus paired consistency
 \captionof{table}{Slide-blocked method contrasts by backbone.}
 \scriptsize
 \setlength{\tabcolsep}{5pt}
-\resizebox{\columnwidth}{!}{%
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrrrrr@{}}
 \toprule
 Backbone & Scanner probe & Mean cosine & Worst cosine & Mean retrieval & Worst retrieval \\
@@ -215,7 +208,7 @@ Phikon and ResNet50 method differences were averaged within each of the same 48 
 \centering
 \captionof{table}{Repeated-measures transfer summary over Phikon and ResNet50.}
 \scriptsize
-\resizebox{\columnwidth}{!}{%
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lrrr@{}}
 \toprule
 Metric & Mean difference & 95\% slide-bootstrap interval & Favorable slides \\
